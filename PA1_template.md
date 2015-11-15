@@ -4,24 +4,28 @@ author: "Jason Newbury"
 date: "November 14, 2015"
 output: html_document
 ---
+PA1_Template
+================================================================
 
-First we must read in the data and add the intervals to the date to form a forth column
+First we must read in the data
 
 
 ```r
 activity <- read.csv("activity.csv")
 ```
 
-Find the mean and Median of the data,
+Graph a histogram of the data
 
 ```r
 library(plyr)
 day_activity <- ddply(activity,.(date),function(x) sum(x$steps))
 colnames(day_activity)[2] <- "steps"
-hist(day_activity$steps)
+hist(day_activity$steps, main = "Histogram of Total Steps per Day" , xlab = "Number of Steps")
 ```
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+  
+  Find the mean
 
 ```r
 mean(day_activity$steps)
@@ -30,6 +34,7 @@ mean(day_activity$steps)
 ```
 ## [1] NA
 ```
+  Find the median
 
 ```r
 median(day_activity$steps)
@@ -48,6 +53,7 @@ mean(day_activity$steps,na.rm = TRUE)
 ```
 ## [1] 10766.19
 ```
+and the median
 
 ```r
 median(day_activity$steps,na.rm = TRUE)
@@ -62,12 +68,12 @@ Now we find out the average number of steps taken in each 5 minute period
 ```r
 min_activity <- ddply(activity, .(interval), function(x) mean(x$steps, na.rm=TRUE))
 colnames(min_activity)[2] <- "steps"
-plot(min_activity$interval,min_activity$steps, xlab = "Min",main = "average number of steps during each 5 min interval", ylab = "average number of steps", type = "l")
+plot(min_activity$interval,min_activity$steps, xlab = "Minutes",main = "Average Number of Steps During Each 5 Minute Interval", ylab = "Average Number of Steps", type = "l")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
 
-Find the max time
+Find at what time the max number of steps occur
 
 ```r
 min_activity$interval[which.max(min_activity$steps)]
@@ -78,7 +84,7 @@ min_activity$interval[which.max(min_activity$steps)]
 ```
 
 
-number of NA's
+Find the number of NA's
 
 ```r
 sum(is.na(activity$steps))
@@ -101,10 +107,10 @@ Redo the histogram from earlier with the NA less data
 ```r
 day_activity <- ddply(activity,.(date),function(x) sum(x$steps))
 colnames(day_activity)[2] <- "steps"
-hist(day_activity$steps)
+hist(day_activity$steps, main = "Histogram of Total Steps per Day" , xlab = "Number of Steps")
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
 
 ```r
 mean(day_activity$steps)
@@ -132,14 +138,14 @@ activity_weekend <- subset(activity, weekdayorweekend == "Weekend")
 
 min_activity_weekend <- ddply(activity_weekend, .(interval), function(x) mean(x$steps, na.rm=TRUE))
 colnames(min_activity_weekend)[2] <- "steps"
-plot(min_activity_weekend$interval,min_activity_weekend$steps, xlab = "Min",main = "weekend", ylab = "average number of steps", type = "l")
+plot(min_activity_weekend$interval,min_activity_weekend$steps, xlab = "Minutes",main = "Weekend", ylab = "Average Number of Steps", type = "l")
 
 min_activity_weekday <- ddply(activity_weekday, .(interval), function(x) mean(x$steps, na.rm=TRUE))
 colnames(min_activity_weekday)[2] <- "steps"
-plot(min_activity_weekday$interval,min_activity_weekday$steps, xlab = "Min",main = "weekday", ylab = "average number of steps", type = "l")
+plot(min_activity_weekday$interval,min_activity_weekday$steps, xlab = "Minutes",main = "Weekday", ylab = "Average Number of Steps", type = "l")
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
 Seems people get start moving earlier on Weekdays and stop moving sooner.
 
